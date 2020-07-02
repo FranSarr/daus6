@@ -4,6 +4,7 @@ import com.exercicis.daus.domain.Player;
 import com.exercicis.daus.persistence.GameRepository;
 import com.exercicis.daus.persistence.PlayerRepository;
 import com.exercicis.daus.utilities.PlayerExistsException;
+import com.exercicis.daus.utilities.PlayerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class DausController {
                 throw new PlayerExistsException(changePlayer.getName());
             }
             modifiedPlayer.setName(changePlayer.getName());
-        }
+        } else { throw new PlayerNotFoundException(id);}
         return playerRepository.save(modifiedPlayer);
     }
 }
