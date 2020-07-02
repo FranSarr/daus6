@@ -3,6 +3,7 @@ package com.exercicis.daus.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Entity(name="Game")
 public class Game {
@@ -24,6 +25,19 @@ public class Game {
 
     public Game(Player player) {
         this.player = player;
+
+        Random dc1 = new Random();
+        Random dc2 = new Random();
+        int roll1 = dc1.nextInt(6)+1;
+        int roll2 = dc1.nextInt(6)+1;
+        int result = roll1 + roll2;
+        Boolean isSeven = false;
+        if (result==7) { isSeven=true; }
+
+        this.dice1 = roll1;
+        this.dice2 = roll2;
+        this.won = isSeven;
+
     }
 
     public Game(Integer dice1, Integer dice2, Player player) {

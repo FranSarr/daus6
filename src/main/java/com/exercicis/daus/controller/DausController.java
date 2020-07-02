@@ -6,6 +6,7 @@ import com.exercicis.daus.persistence.GameRepository;
 import com.exercicis.daus.persistence.PlayerRepository;
 import com.exercicis.daus.utilities.PlayerExistsException;
 import com.exercicis.daus.utilities.PlayerNotFoundException;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,19 @@ public class DausController {
             modifiedPlayer.setName(changePlayer.getName());
         } else { throw new PlayerNotFoundException(id);}
         return playerRepository.save(modifiedPlayer);
+    }
+
+    // Create a new game fo a particular shop
+    @PostMapping(path="/players/{id}/games")
+    public Game throwDices(@PathVariable int id){
+        Player myPlayer = playerRepository.findById(id);
+        if(myPlayer == null) {
+            throw new PlayerNotFoundException(id);
+        }
+        Game newGame = new Game(myPlayer);
+        //newPicture.setShop(myShop);
+        //newPicture.setDate(new Date());
+        return gameRepository.save(newGame);
     }
 
 
