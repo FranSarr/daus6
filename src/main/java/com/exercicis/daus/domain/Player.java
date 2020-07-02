@@ -16,10 +16,12 @@ public class Player {
     private Date date;
 
     public Player() {
+        this.date = new Date();
     }
 
     public Player(String name) {
         this.name = name;
+        this.date = new Date();
     }
 
     public int getId() {
