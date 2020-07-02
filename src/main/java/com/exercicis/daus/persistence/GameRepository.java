@@ -10,7 +10,6 @@ import java.util.List;
 public interface GameRepository extends CrudRepository<Game, Integer> {
     List<Game> findByPlayer(Player player);
 
-    @Transactional
-        // Allows write operations
+    @Transactional // Allows write operations
     void deleteGameByPlayer(Player player);
 }

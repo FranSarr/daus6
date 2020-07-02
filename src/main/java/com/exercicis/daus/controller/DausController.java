@@ -79,5 +79,11 @@ public class DausController {
         return gameRepository.findByPlayer(myPlayer);
     }
 
+    // Delete all games from a particular player
+    @DeleteMapping("/players/{id}/games")
+    void deleteGames(@PathVariable int id) {
+        Player myPlayer = playerRepository.findById(id);
+        gameRepository.deleteGameByPlayer(myPlayer);
+    }
 
 }
