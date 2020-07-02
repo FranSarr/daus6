@@ -1,5 +1,6 @@
 package com.exercicis.daus.controller;
 
+import com.exercicis.daus.domain.Game;
 import com.exercicis.daus.domain.Player;
 import com.exercicis.daus.persistence.GameRepository;
 import com.exercicis.daus.persistence.PlayerRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController // This means that this class is a Controller
@@ -39,18 +41,6 @@ public class DausController {
     }
 
     // Modifies the name of a player in the database
-    //@PutMapping("/players/{id}")
-    //Player replacePlayer(@RequestBody Player newPlayer, @PathVariable int id) {
-    //    return playerRepository.findById(id)
-    //            .map(player -> {
-    //                player.setName(newPlayer.getName());
-    //                return playerRepository.save(newPlayer);
-    //            })
-    //            .orElseGet(() -> {
-    //                newPlayer.setId(id);
-    //                return playerRepository.save(newPlayer);
-    //            });
-
     @PutMapping("/players/{id}")
     Player replacePlayer(@RequestBody Player changePlayer, @PathVariable int id) {
         Player modifiedPlayer = playerRepository.findById(id);
@@ -63,4 +53,16 @@ public class DausController {
         } else { throw new PlayerNotFoundException(id);}
         return playerRepository.save(modifiedPlayer);
     }
+
+
+    // List all games of a particular player
+    @GetMapping("/players/{id}/games")
+    List<Game> getGamesByPlayer(@PathVariable int id) {
+        Player myPlayer = playerRepository.findById(id);
+        if(myPlayer == null) {
+            throw new PlayerNotFoundException(id);
+        }
+        return gameRepository.findByPlayer(myPlayer);
+    }
+
 }
