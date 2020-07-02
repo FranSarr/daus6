@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController // This means that this class is a Controller
 @RequestMapping(path="")
 public class DausController {
@@ -33,5 +35,31 @@ public class DausController {
                 throw new PlayerExistsException(newPlayer.getName());
         }
         return playerRepository.save(newPlayer);
+    }
+
+    // Modifies the name of a player in the database
+    //@PutMapping("/players/{id}")
+    //Player replacePlayer(@RequestBody Player newPlayer, @PathVariable int id) {
+    //    return playerRepository.findById(id)
+    //            .map(player -> {
+    //                player.setName(newPlayer.getName());
+    //                return playerRepository.save(newPlayer);
+    //            })
+    //            .orElseGet(() -> {
+    //                newPlayer.setId(id);
+    //                return playerRepository.save(newPlayer);
+    //            });
+
+    @PutMapping("/players/{id}")
+    Player replacePlayer(@RequestBody Player changePlayer, @PathVariable int id) {
+        Player modifiedPlayer = playerRepository.findById(id);
+        if (playerRepository.existsById(id)){
+            if ( playerRepository.existsByName(changePlayer.getName()) && !changePlayer.getName().equalsIgnoreCase("anonymous"))
+            {
+                throw new PlayerExistsException(changePlayer.getName());
+            }
+            modifiedPlayer.setName(changePlayer.getName());
+        }
+        return playerRepository.save(modifiedPlayer);
     }
 }
