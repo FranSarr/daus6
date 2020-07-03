@@ -7,6 +7,7 @@ import com.exercicis.daus.persistence.PlayerRepository;
 import com.exercicis.daus.utilities.PlayerExistsException;
 import com.exercicis.daus.utilities.PlayerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -93,17 +94,10 @@ public class DausController {
         gameRepository.deleteGameByPlayer(myPlayer);
     }
 
-    // Shows the list of players stadistics
-    //@GetMapping(path="/players/stats")
-    //public @ResponseBody
-    //Iterable<PlayerStats> getAllPlayersStats() {
-    //    List<PlayerStats> myPlayerStats = new ArrayList <PlayerStats>();
-    //    Long active_player = playerRepository.count();
-    //    System.out.println(active_player);
-    //    for(int i=1;i<=active_player;i++){
-    //        Player myPlayer = playerRepository.findById(i);
-    //        myPlayerStats.add(myPlayer);
-    //    }
-    //    return myPlayerStats;
-    //}
+    // Shows the ranking of players bu their success rate
+    @GetMapping(path="/players/ranking")
+    public @ResponseBody
+    Iterable<Player> getPlayersRanking() {
+        return playerRepository.findByOrderByRateDesc();
+    }
 }
