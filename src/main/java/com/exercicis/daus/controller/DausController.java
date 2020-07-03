@@ -100,4 +100,16 @@ public class DausController {
     Iterable<Player> getPlayersRanking() {
         return playerRepository.findByOrderByRateDesc();
     }
+
+    // Finds the loser player by their success rate
+    @GetMapping("/players/ranking/loser")
+    Player getLoser() {
+        return playerRepository.findByOrderByRateAsc().get(0);
+    }
+
+    // Finds the winner player by their success rate
+    @GetMapping("/players/ranking/winner")
+    Player getWinner() {
+        return playerRepository.findByOrderByRateDesc().get(0);
+    }
 }

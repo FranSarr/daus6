@@ -13,5 +13,5 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     Boolean existsByName(String name);
     Boolean existsById(int id);
     List<Player> findByOrderByRateDesc();
-
+    List<Player> findByOrderByRateAsc();
 }
