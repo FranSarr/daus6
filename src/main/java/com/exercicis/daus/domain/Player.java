@@ -14,6 +14,9 @@ public class Player {
     private int id;
     private String name;
     private Date date;
+    private int wins;
+    private int played;
+    private Float rate;
 
     public Player() {
         this.date = new Date();
@@ -40,4 +43,27 @@ public class Player {
         return date;
     }
 
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getPlayed() {
+        return played;
+    }
+
+    public void setPlayed(int played) {
+        this.played = played;
+    }
+
+    public Float getRate() {
+        return rate;
+    }
+
+    public void setRate(Float rate) {
+        this.rate = rate;
+    }
 }

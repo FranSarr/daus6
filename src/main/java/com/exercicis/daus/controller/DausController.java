@@ -6,13 +6,10 @@ import com.exercicis.daus.persistence.GameRepository;
 import com.exercicis.daus.persistence.PlayerRepository;
 import com.exercicis.daus.utilities.PlayerExistsException;
 import com.exercicis.daus.utilities.PlayerNotFoundException;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController // This means that this class is a Controller
 @RequestMapping(path="")
@@ -38,6 +35,7 @@ public class DausController {
         {
                 throw new PlayerExistsException(newPlayer.getName());
         }
+        newPlayer.setRate(0.0f);
         return playerRepository.save(newPlayer);
     }
 
@@ -55,7 +53,7 @@ public class DausController {
         return playerRepository.save(modifiedPlayer);
     }
 
-    // Create a new game fo a particular shop
+    // Create a new game fo a particular player
     @PostMapping(path="/players/{id}/games")
     public Game throwDices(@PathVariable int id){
         Player myPlayer = playerRepository.findById(id);
@@ -63,8 +61,14 @@ public class DausController {
             throw new PlayerNotFoundException(id);
         }
         Game newGame = new Game(myPlayer);
-        //newPicture.setShop(myShop);
-        //newPicture.setDate(new Date());
+        if (newGame.getWon()){
+            myPlayer.setWins(myPlayer.getWins()+1);
+            //myPlayer.setRate((float)(myPlayer.getWins()/myPlayer.getPlayed()));
+        }
+        myPlayer.setPlayed(myPlayer.getPlayed()+1);
+        myPlayer.setRate(100*(float)myPlayer.getWins()/myPlayer.getPlayed());
+        System.out.println(myPlayer.getRate());
+        playerRepository.save(myPlayer);
         return gameRepository.save(newGame);
     }
 
@@ -83,7 +87,23 @@ public class DausController {
     @DeleteMapping("/players/{id}/games")
     void deleteGames(@PathVariable int id) {
         Player myPlayer = playerRepository.findById(id);
+        myPlayer.setWins(0);
+        myPlayer.setPlayed(0);
+        myPlayer.setRate(0.0f);
         gameRepository.deleteGameByPlayer(myPlayer);
     }
 
+    // Shows the list of players stadistics
+    //@GetMapping(path="/players/stats")
+    //public @ResponseBody
+    //Iterable<PlayerStats> getAllPlayersStats() {
+    //    List<PlayerStats> myPlayerStats = new ArrayList <PlayerStats>();
+    //    Long active_player = playerRepository.count();
+    //    System.out.println(active_player);
+    //    for(int i=1;i<=active_player;i++){
+    //        Player myPlayer = playerRepository.findById(i);
+    //        myPlayerStats.add(myPlayer);
+    //    }
+    //    return myPlayerStats;
+    //}
 }
