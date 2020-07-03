@@ -42,9 +42,8 @@ public class Game {
         int roll4 = dc4.nextInt(6)+1;
         int roll5 = dc5.nextInt(6)+1;
         int roll6 = dc6.nextInt(6)+1;
-        int result = roll1 + roll2;
-        Boolean isSeven = false;
-        if (result==7) { isSeven=true; }
+
+        Boolean all5or6s = roll1>4 && roll2>4 && roll3>4 && roll4>4 && roll5>4 && roll6>4;
 
         this.dice1 = roll1;
         this.dice2 = roll2;
@@ -52,7 +51,7 @@ public class Game {
         this.dice4 = roll4;
         this.dice5 = roll5;
         this.dice6 = roll6;
-        this.won = isSeven;
+        this.won = all5or6s;
 
     }
 
